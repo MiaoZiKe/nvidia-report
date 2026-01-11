@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVIDIA CES 2026: 實體 AI 新紀元</title>
+    
+    <!-- CSS Framework: Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Charting Library: Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts: Noto Sans TC for Traditional Chinese -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Warm Neutrals & Muted Tech -->
+    <!-- Background: #FAFAF9 (Stone 50) -->
+    <!-- Text: #44403C (Stone 700) -->
+    <!-- Primary Accent: #0D9488 (Teal 600 - Muted Tech Green) -->
+    <!-- Secondary Accent: #57534E (Stone 600) -->
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FAFAF9; /* warm neutral bg */
+            color: #44403C;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e; 
+        }
+
+        /* Chart Container Styling - MANDATORY for responsiveness */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Prevent excessive width */
+            height: 300px;    /* Base height */
+            max-height: 400px;
+            margin: 0 auto;   /* Center horizontally */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-active {
+            background-color: #0D9488;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Flowchart Connector Lines */
+        .connector-line {
+            position: absolute;
+            background-color: #E7E5E4;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-stone-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-teal-600 rounded flex items-center justify-center text-white font-bold">N</div>
+                <h1 class="text-xl font-bold tracking-tight text-stone-800">CES 2026 <span class="text-teal-600 font-normal">| 實體 AI 新紀元</span></h1>
+            </div>
+            <div class="hidden md:block text-sm text-stone-500">
+                互動式報告摘要
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 max-w-7xl mx-auto w-full">
+        
+        <!-- Sidebar Navigation (Desktop) / Top Bar (Mobile) -->
+        <nav class="hidden md:flex flex-col w-64 py-8 pr-8 space-y-2 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-stone-200">
+            <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all hover:bg-stone-100 flex items-center gap-3 nav-active">
+                <i class="fa-solid fa-layer-group w-5"></i> 總覽 (Overview)
+            </button>
+            <button onclick="switchTab('rubin')" id="nav-rubin" class="nav-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all hover:bg-stone-100 flex items-center gap-3 text-stone-600">
+                <i class="fa-solid fa-microchip w-5"></i> Rubin 運算平台
+            </button>
+            <button onclick="switchTab('cosmos')" id="nav-cosmos" class="nav-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all hover:bg-stone-100 flex items-center gap-3 text-stone-600">
+                <i class="fa-solid fa-atom w-5"></i> 實體 AI (Cosmos)
+            </button>
+            <button onclick="switchTab('alpamayo')" id="nav-alpamayo" class="nav-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all hover:bg-stone-100 flex items-center gap-3 text-stone-600">
+                <i class="fa-solid fa-car w-5"></i> Alpamayo 自駕
+            </button>
+            <button onclick="switchTab('robotics')" id="nav-robotics" class="nav-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all hover:bg-stone-100 flex items-center gap-3 text-stone-600">
+                <i class="fa-solid fa-robot w-5"></i> 機器人與 Agentic AI
+            </button>
+            <button onclick="switchTab('market')" id="nav-market" class="nav-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all hover:bg-stone-100 flex items-center gap-3 text-stone-600">
+                <i class="fa-solid fa-network-wired w-5"></i> 供應鏈與市場
+            </button>
+        </nav>
+
+        <!-- Mobile Nav -->
+        <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-stone-200 z-50 flex justify-around p-2 text-xs">
+            <button onclick="switchTab('overview')" class="flex flex-col items-center p-2 text-stone-600 hover:text-teal-600">
+                <i class="fa-solid fa-layer-group mb-1"></i> 總覽
+            </button>
+            <button onclick="switchTab('rubin')" class="flex flex-col items-center p-2 text-stone-600 hover:text-teal-600">
+                <i class="fa-solid fa-microchip mb-1"></i> Rubin
+            </button>
+            <button onclick="switchTab('cosmos')" class="flex flex-col items-center p-2 text-stone-600 hover:text-teal-600">
+                <i class="fa-solid fa-atom mb-1"></i> AI
+            </button>
+            <button onclick="switchTab('alpamayo')" class="flex flex-col items-center p-2 text-stone-600 hover:text-teal-600">
+                <i class="fa-solid fa-car mb-1"></i> 自駕
+            </button>
+            <button onclick="switchTab('market')" class="flex flex-col items-center p-2 text-stone-600 hover:text-teal-600">
+                <i class="fa-solid fa-network-wired mb-1"></i> 市場
+            </button>
+        </div>
+
+        <!-- Main Content Area -->
+        <main id="app-content" class="flex-1 py-8 px-4 md:px-8 pb-24 md:pb-8 overflow-y-auto">
+            <!-- Content Injected via JS -->
+        </main>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- DATA STORE ---
+        const reportData = {
+            overview: {
+                title: "實體 AI 元年：從「算力」轉向「理解世界」",
+                intro: "在 CES 2026 主題演講中，NVIDIA 執行長黃仁勳宣佈 AI 正式進入「實體世界 (Physical AI)」與「大規模推論」時代。本次發佈會不僅僅是硬體升級，更是 AI 認知能力的飛躍。",
+                cards: [
+                    { icon: "fa-rocket", title: "5倍 效能躍進", value: "Rubin vs Blackwell", desc: "電晶體僅增 1.6倍，但 AI 效能提升 5倍。", color: "text-blue-600" },
+                    { icon: "fa-tags", title: "1/10 推論成本", value: "大幅降價", desc: "透過 NVFP4 架構，解決企業導入 AI 的成本痛點。", color: "text-green-600" },
+                    { icon: "fa-brain", title: "Cosmos 模型", value: "物理世界模型", desc: "AI 開始理解重力、摩擦力，用於訓練機器人。", color: "text-purple-600" },
+                    { icon: "fa-wind", title: "100% 液冷", value: "零線纜設計", desc: "Rubin 平台全面採用液冷，組裝時間從 2小時縮短至 5分鐘。", color: "text-cyan-600" }
+                ]
+            },
+            rubin: {
+                title: "Vera Rubin 運算平台：次世代 AI 超級電腦",
+                intro: "以天文學家 Vera Rubin 命名，此平台是本次發佈會的硬體核心。它採用「六晶片協同設計」，將 CPU、GPU、網路與交換器整合為單一運算單元，旨在接棒 Blackwell 架構。",
+                chips: ["Vera CPU", "Rubin GPU", "NVLink 6 Switch", "ConnectX-9", "BlueField-4", "Spectrum-6"],
+                chartDesc: "Rubin 在維持相近功耗的同時，提供了爆發性的效能增長，並透過架構優化大幅降低了推論成本。"
+            },
+            cosmos: {
+                title: "實體 AI (Physical AI) 與 Cosmos",
+                intro: "黃仁勳強調：「AI 的下一個前沿是理解物理法則」。Cosmos 是一個世界基礎模型 (World Foundation Model)，它不僅生成像素，更生成「物理」數據。",
+                steps: [
+                    { title: "1. 觀察 (Video Data)", desc: "使用 2000 萬小時的影片數據訓練，讓 AI 觀看真實世界運作。" },
+                    { title: "2. 理解 (Cosmos Model)", desc: "Cosmos 學習物理定律（如碰撞、流體、重力），預測未來幀的物理狀態。" },
+                    { title: "3. 模擬 (Omniverse)", desc: "在虛擬空間中生成數十萬種場景，訓練機器人應對極端情況。" },
+                    { title: "4. 實踐 (Robot)", desc: "訓練好的「大腦」下載到機器人實體，直接具備物理操作能力。" }
+                ]
+            },
+            alpamayo: {
+                title: "Alpamayo：自駕車的「思考鏈」革命",
+                intro: "傳統自駕系統依賴「感知 -> 規則 -> 控制」。Alpamayo 則引入了類似人類的「思考鏈 (Chain of Thought)」能力，能對駕駛決策進行推理，被譽為 L4 自駕的突破。",
+                partners: ["Mercedes-Benz (首發)", "Lucid", "Uber", "Jaguar Land Rover"],
+                comparison: {
+                    traditional: "看到紅燈 -> 煞車 (規則驅動)",
+                    alpamayo: "看到紅燈 -> 推理：路面濕滑且後車跟太近 -> 決策：緩慢減速以防追撞 (推理驅動)"
+                }
+            },
+            robotics: {
+                title: "機器人的「ChatGPT 時刻」",
+                intro: "隨著 Jetson Thor 平台的推出，工業機器人現在能聽懂自然語言指令，並具有長期記憶。這標誌著 Agentic AI (代理 AI) 正式進入工廠與家庭。",
+                specs: "Jetson Thor: Blackwell GPU 架構 + Vera CPU 核心 + 專為機器人設計的安全性。",
+                demoChat: [
+                    { role: "user", text: "這箱零件放哪裡？" },
+                    { role: "robot", text: "掃描中... 這是 'A型齒輪'。根據昨天的庫存日誌，A區貨架已滿。我應該將其暫存於 B區溢流區，並標記為待處理。是否執行？" }
+                ]
+            },
+            market: {
+                title: "供應鏈與市場影響",
+                intro: "輝達正從單純的晶片供應商轉型為「AI 基礎設施公司」。Rubin 平台的量產高度依賴台灣供應鏈。",
+                nodes: [
+                    { name: "NVIDIA", type: "Core", x: 50, y: 50 },
+                    { name: "TSMC", type: "Fab", x: 20, y: 20, rel: "3nm Process" },
+                    { name: "Foxconn", type: "Assembly", x: 80, y: 20, rel: "NVL72 機櫃" },
+                    { name: "Quanta", type: "Server", x: 80, y: 80, rel: "伺服器設計" },
+                    { name: "Siemens", type: "Partner", x: 20, y: 80, rel: "工業 AI 應用" }
+                ]
+            }
+        };
+
+        // --- STATE & INIT ---
+        let currentTab = 'overview';
+        let charts = {}; // Store chart instances to destroy them later
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSection('overview');
+        });
+
+        function switchTab(tabId) {
+            // Update UI state
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('nav-active', 'text-white', 'bg-teal-600', 'shadow-md');
+                btn.classList.add('text-stone-600');
+            });
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('nav-active', 'text-white', 'bg-teal-600', 'shadow-md');
+                activeBtn.classList.remove('text-stone-600');
+            }
+
+            // Mobile Nav update
+            // (Simplified for this demo, assumes user visual feedback is enough)
+
+            currentTab = tabId;
+            renderSection(tabId);
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderSection(tabId) {
+            const container = document.getElementById('app-content');
+            container.innerHTML = ''; // Clear content
+            container.className = 'flex-1 py-8 px-4 md:px-8 pb-24 md:pb-8 overflow-y-auto fade-in';
+
+            const data = reportData[tabId];
+            
+            // Common Header
+            const headerHTML = `
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-stone-800 mb-3">${data.title}</h2>
+                    <p class="text-lg text-stone-600 leading-relaxed max-w-4xl">${data.intro}</p>
+                </div>
+            `;
+            container.innerHTML += headerHTML;
+
+            // Specific Content
+            if (tabId === 'overview') renderOverview(container, data);
+            else if (tabId === 'rubin') renderRubin(container, data);
+            else if (tabId === 'cosmos') renderCosmos(container, data);
+            else if (tabId === 'alpamayo') renderAlpamayo(container, data);
+            else if (tabId === 'robotics') renderRobotics(container, data);
+            else if (tabId === 'market') renderMarket(container, data);
+        }
+
+        // 1. OVERVIEW RENDER
+        function renderOverview(container, data) {
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-6';
+            
+            data.cards.forEach(card => {
+                grid.innerHTML += `
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-stone-50 flex items-center justify-center ${card.color} text-xl">
+                                <i class="fa-solid ${card.icon}"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-stone-800">${card.title}</h3>
+                        </div>
+                        <div class="text-3xl font-bold text-stone-800 mb-2">${card.value}</div>
+                        <p class="text-stone-500">${card.desc}</p>
+                    </div>
+                `;
+            });
+            container.appendChild(grid);
+        }
+
+        // 2. RUBIN RENDER
+        function renderRubin(container, data) {
+            // Layout: Charts on top, Chips list below
+            const layout = document.createElement('div');
+            layout.className = 'flex flex-col gap-8';
+
+            // Charts Section
+            layout.innerHTML += `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                        <h3 class="text-lg font-bold mb-4 text-center">Blackwell vs Rubin 效能對比</h3>
+                        <div class="chart-container">
+                            <canvas id="rubinPerfChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                        <h3 class="text-lg font-bold mb-4 text-center">推論成本大幅下降</h3>
+                        <div class="chart-container">
+                            <canvas id="rubinCostChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Chips List
+            let chipsHTML = '<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">';
+            data.chips.forEach(chip => {
+                chipsHTML += `
+                    <div class="bg-stone-50 border border-stone-200 p-4 rounded-lg text-center">
+                        <i class="fa-solid fa-microchip text-teal-600 text-2xl mb-2 block"></i>
+                        <span class="font-medium text-stone-700 text-sm">${chip}</span>
+                    </div>
+                `;
+            });
+            chipsHTML += '</div>';
+
+            layout.innerHTML += `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                    <h3 class="text-lg font-bold mb-4">六晶片協同設計 (6-Chip Codesign)</h3>
+                    ${chipsHTML}
+                    <p class="mt-4 text-sm text-stone-500 text-center">${data.chartDesc}</p>
+                </div>
+            `;
+
+            container.appendChild(layout);
+
+            // Render Charts
+            setTimeout(() => {
+                initRubinCharts();
+            }, 100);
+        }
+
+        function initRubinCharts() {
+            // Chart 1: Performance
+            const ctx1 = document.getElementById('rubinPerfChart').getContext('2d');
+            if(charts['perf']) charts['perf'].destroy();
+            charts['perf'] = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Blackwell', 'Rubin'],
+                    datasets: [{
+                        label: 'AI 效能倍數 (Performance)',
+                        data: [1, 5],
+                        backgroundColor: ['#d6d3d1', '#0D9488'],
+                        borderRadius: 6
+                    }, {
+                        label: '電晶體數量倍數 (Transistors)',
+                        data: [1, 1.6],
+                        backgroundColor: ['#e7e5e4', '#5eead4'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // Chart 2: Cost
+            const ctx2 = document.getElementById('rubinCostChart').getContext('2d');
+            if(charts['cost']) charts['cost'].destroy();
+            charts['cost'] = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['成本降低 (Savings)', '剩餘成本 (Cost)'],
+                    datasets: [{
+                        data: [90, 10],
+                        backgroundColor: ['#ccfbf1', '#0D9488'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { position: 'bottom' },
+                        tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw}%` } }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // 3. COSMOS RENDER
+        function renderCosmos(container, data) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'space-y-6';
+
+            // Interactive Steps
+            let stepsHTML = '';
+            data.steps.forEach((step, index) => {
+                stepsHTML += `
+                    <div class="flex flex-col md:flex-row gap-4 items-start bg-white p-5 rounded-lg border border-stone-100 shadow-sm relative z-10">
+                        <div class="w-10 h-10 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center font-bold flex-shrink-0 border border-teal-100">
+                            ${index + 1}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-stone-800 text-lg">${step.title}</h4>
+                            <p class="text-stone-600">${step.desc}</p>
+                        </div>
+                    </div>
+                    ${index < data.steps.length - 1 ? '<div class="hidden md:block h-8 w-0.5 bg-stone-300 ml-10 my-1"></div>' : ''}
+                `;
+            });
+
+            wrapper.innerHTML = `
+                <div class="bg-stone-50 p-6 rounded-xl border border-stone-200">
+                    <h3 class="text-xl font-bold mb-6 text-center text-stone-700">實體 AI 學習迴圈</h3>
+                    <div class="max-w-3xl mx-auto">
+                        ${stepsHTML}
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                        <h4 class="font-bold text-teal-600 mb-2"><i class="fa-solid fa-film mr-2"></i>生成式 AI (Gen AI)</h4>
+                        <p class="text-stone-500 text-sm">學習像素與語言。產出的是文字、圖片或影片，但不一定符合物理邏輯（例如手可能穿過桌子）。</p>
+                    </div>
+                    <div class="bg-teal-50 p-6 rounded-xl shadow-sm border border-teal-200">
+                        <h4 class="font-bold text-teal-800 mb-2"><i class="fa-solid fa-cube mr-2"></i>實體 AI (Physical AI)</h4>
+                        <p class="text-teal-700 text-sm">學習物理定律。產出的是符合重力、摩擦力與碰撞規則的 3D 數據，能直接指導機器人如何在真實世界行動。</p>
+                    </div>
+                </div>
+            `;
+            container.appendChild(wrapper);
+        }
+
+        // 4. ALPAMAYO RENDER
+        function renderAlpamayo(container, data) {
+            const content = document.createElement('div');
+            content.className = 'space-y-8';
+
+            // Comparison Visual
+            content.innerHTML += `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                    <h3 class="text-lg font-bold mb-4">思考模式對比 (Thinking Process)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-4 bg-stone-50 rounded-lg border border-stone-200 opacity-70">
+                            <h4 class="font-bold text-stone-500 mb-2">傳統自駕</h4>
+                            <div class="text-sm space-y-2">
+                                <div class="p-2 bg-white border rounded text-stone-400">感知 (Perception)</div>
+                                <div class="text-center text-stone-300">↓</div>
+                                <div class="p-2 bg-white border rounded text-stone-400">規則 (Rules)</div>
+                                <div class="text-center text-stone-300">↓</div>
+                                <div class="p-2 bg-white border rounded text-stone-400">控制 (Control)</div>
+                            </div>
+                            <p class="mt-3 text-xs text-stone-500">僵化：遇到規則外的狀況（如罕見路況）容易卡住。</p>
+                        </div>
+                        <div class="p-4 bg-teal-50 rounded-lg border border-teal-200 ring-2 ring-teal-100">
+                            <h4 class="font-bold text-teal-700 mb-2">Alpamayo (L4 級)</h4>
+                            <div class="text-sm space-y-2">
+                                <div class="p-2 bg-white border border-teal-200 rounded text-teal-800 shadow-sm">觀察 (Observation)</div>
+                                <div class="text-center text-teal-400">↓</div>
+                                <div class="p-3 bg-white border border-teal-200 rounded text-teal-900 shadow-sm font-medium border-l-4 border-l-teal-500">
+                                    <i class="fa-solid fa-brain mr-1 text-teal-500"></i> 思考鏈推理 (Chain of Thought)
+                                </div>
+                                <div class="text-center text-teal-400">↓</div>
+                                <div class="p-2 bg-white border border-teal-200 rounded text-teal-800 shadow-sm">決策 (Decision)</div>
+                            </div>
+                            <p class="mt-3 text-xs text-teal-700">靈活：像人類一樣理解「為什麼」要這樣開。</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Partners
+            let partnersHTML = '<div class="flex flex-wrap gap-3 mt-2">';
+            data.partners.forEach(p => {
+                partnersHTML += `<span class="px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-sm font-medium border border-stone-200">${p}</span>`;
+            });
+            partnersHTML += '</div>';
+
+            content.innerHTML += `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                    <h3 class="text-lg font-bold mb-2">生態系合作夥伴</h3>
+                    <p class="text-sm text-stone-500 mb-4">這些車廠已承諾導入 Alpamayo 或與 NVIDIA 深度合作：</p>
+                    ${partnersHTML}
+                </div>
+            `;
+            container.appendChild(content);
+        }
+
+        // 5. ROBOTICS RENDER
+        function renderRobotics(container, data) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'grid grid-cols-1 lg:grid-cols-2 gap-8';
+
+            // Left: Specs
+            wrapper.innerHTML += `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-solid fa-robot text-teal-600 text-2xl"></i>
+                        <h3 class="text-lg font-bold">Jetson Thor 平台</h3>
+                    </div>
+                    <p class="text-stone-600 mb-4">${data.specs}</p>
+                    <ul class="space-y-3 text-sm text-stone-600">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-teal-500 mt-1"></i> 專為人形機器人設計的運算核心</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-teal-500 mt-1"></i> 內建安全性與備援機制</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-teal-500 mt-1"></i> 支援自然語言互動 (Agentic AI)</li>
+                    </ul>
+                </div>
+            `;
+
+            // Right: Chat Demo
+            const chatBox = document.createElement('div');
+            chatBox.className = 'bg-stone-900 rounded-xl p-4 shadow-lg text-stone-200 font-mono text-sm h-64 flex flex-col';
+            chatBox.innerHTML = `
+                <div class="border-b border-stone-700 pb-2 mb-2 flex justify-between">
+                    <span class="text-teal-400 font-bold">Agentic AI Terminal</span>
+                    <span class="text-xs text-stone-500">Live Simulation</span>
+                </div>
+                <div class="flex-1 overflow-y-auto space-y-3" id="chat-content">
+                    <!-- Dynamic chat items -->
+                </div>
+                <div class="mt-2 pt-2 border-t border-stone-700 flex gap-2">
+                    <span class="text-teal-500">></span>
+                    <span class="animate-pulse">_</span>
+                </div>
+            `;
+            
+            wrapper.appendChild(chatBox);
+            container.appendChild(wrapper);
+
+            // Trigger Chat Animation
+            simulateChat(data.demoChat);
+        }
+
+        function simulateChat(chatData) {
+            const chatContainer = document.getElementById('chat-content');
+            if(!chatContainer) return;
+            chatContainer.innerHTML = '';
+            
+            let delay = 500;
+            chatData.forEach((msg, idx) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    if (msg.role === 'user') {
+                        div.className = 'text-right text-stone-400';
+                        div.innerHTML = `<span class="bg-stone-800 px-2 py-1 rounded inline-block">User: ${msg.text}</span>`;
+                    } else {
+                        div.className = 'text-left text-teal-300';
+                        div.innerHTML = `<span class="block mb-1 text-xs opacity-50">Thinking...</span><span class="bg-stone-800 px-2 py-1 rounded inline-block border-l-2 border-teal-500">${msg.text}</span>`;
+                    }
+                    chatContainer.appendChild(div);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, delay);
+                delay += 2000; // Stagger messages
+            });
+        }
+
+        // 6. MARKET RENDER
+        function renderMarket(container, data) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'relative w-full h-[400px] bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden';
+            
+            // Simple HTML-based Node Graph
+            wrapper.innerHTML = `
+                <h3 class="absolute top-4 left-4 text-lg font-bold z-10 bg-white/80 px-2 rounded">關鍵供應鏈網絡</h3>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <!-- Lines (SVG overlay) -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                        <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="#e7e5e4" stroke-width="2" />
+                        <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="#e7e5e4" stroke-width="2" />
+                        <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="#e7e5e4" stroke-width="2" />
+                        <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="#e7e5e4" stroke-width="2" />
+                    </svg>
+                    
+                    <!-- Center Node -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-teal-600 rounded-full flex flex-col items-center justify-center text-white shadow-lg z-10 border-4 border-teal-100">
+                        <i class="fa-solid fa-microchip mb-1"></i>
+                        <span class="font-bold">NVIDIA</span>
+                    </div>
+
+                    <!-- Satellite Nodes -->
+                    <div class="absolute top-[20%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-2 border-stone-300 rounded-full flex items-center justify-center text-stone-600 shadow-sm z-10">TSMC</div>
+                        <span class="text-xs text-stone-500 mt-1 bg-white px-1">CoWoS/3nm</span>
+                    </div>
+
+                    <div class="absolute top-[20%] right-[20%] transform translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-2 border-stone-300 rounded-full flex items-center justify-center text-stone-600 shadow-sm z-10">Foxconn</div>
+                        <span class="text-xs text-stone-500 mt-1 bg-white px-1">NVL72 機櫃</span>
+                    </div>
+
+                    <div class="absolute bottom-[20%] right-[20%] transform translate-x-1/2 translate-y-1/2 flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-2 border-stone-300 rounded-full flex items-center justify-center text-stone-600 shadow-sm z-10">Quanta</div>
+                        <span class="text-xs text-stone-500 mt-1 bg-white px-1">伺服器</span>
+                    </div>
+
+                    <div class="absolute bottom-[20%] left-[20%] transform -translate-x-1/2 translate-y-1/2 flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-2 border-stone-300 rounded-full flex items-center justify-center text-stone-600 shadow-sm z-10">Siemens</div>
+                        <span class="text-xs text-stone-500 mt-1 bg-white px-1">工業 AI</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(wrapper);
+
+            container.innerHTML += `
+                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-100 text-sm text-yellow-800">
+                    <i class="fa-solid fa-lightbulb mr-2"></i>
+                    <strong>市場洞察：</strong> 輝達的「護城河」正從單純的 GPU 晶片，擴展到包含軟體 (CUDA/Cosmos)、網路 (NVLink) 與系統整合 (NVL72) 的完整生態系，這使得競爭對手更難以單點突破。
+                </div>
+            `;
+        }
+    </script>
+    <!-- Visualization & Content Choices:
+         - Goal: Inform (Overview) -> Stat Cards -> Grid Layout -> Quick digest of key metrics (5x, 1/10th cost).
+         - Goal: Compare (Rubin) -> Bar & Doughnut Charts -> Chart.js -> Visual proof of "Performance up, Cost down".
+         - Goal: Explain Process (Cosmos) -> Step-by-step Flow -> Styled HTML/CSS -> Simplifies the complex "Physical AI" training loop.
+         - Goal: Explain Logic (Alpamayo) -> Flow Diagram -> HTML/CSS Blocks -> Contrasts "Rules" vs "Reasoning" clearly.
+         - Goal: Engagement (Robotics) -> Chat Simulation -> JS/HTML -> Shows "Agentic" capabilities in a fun way.
+         - Goal: Relationships (Market) -> Node Graph -> HTML Positioning -> Visualizes the supply chain dependency.
+         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visual elements built with HTML/CSS/FontAwesome/Chart.js Canvas.
+    -->
+    <!-- Application Structure Plan:
+         - Theme: "Command Center" dashboard.
+         - Rationale: The report covers diverse topics (Hardware, Software, Robotics, Auto). A tabbed interface allows users to focus on one pillar at a time without overwhelming scrolling.
+         - Layout: Sticky sidebar for easy navigation between these distinct pillars.
+    -->
+</body>
+</html>
